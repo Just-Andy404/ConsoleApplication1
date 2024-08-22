@@ -2,6 +2,7 @@
 #include "Card.h"
 #include "CreditCard.h"
 #include "debitСards.h"
+using namespace std;
 
 int WelcomeMenu()
 {
@@ -26,10 +27,10 @@ int WelcomeMenu()
 
 void LoginMenu()
 {
-	cout << "Login: ";
+    cout << "Login: ";
 
-	cout << "Password: ";
-	//TODO сделать систему проверку паролей с файлами
+    cout << "Password: ";
+    //TODO сделать систему проверку паролей с файлами
 
 }
 
@@ -55,7 +56,7 @@ Card* WhichOneCards(Account& Acc) {
     return card;
 }
 
-void RegisterateMenu() 
+void RegisterateMenu()
 {
     string login, password, name;
     int choice;
@@ -89,12 +90,12 @@ void Menu(Account& Acc) {
     {
         LoginMenu();
     }
-    else if(WelcomeMenuChoice == 2)
+    else if (WelcomeMenuChoice == 2)
     {
         RegisterateMenu();
     }
     int choice;
-    Card* card = WhichOneCards(Acc); 
+    Card* card = WhichOneCards(Acc);
 
     cout << "Welcome " << Acc.getUserName() << endl;
     cout << "1) Show info" << endl;
@@ -112,10 +113,10 @@ void Menu(Account& Acc) {
         break;
     case 2:
         if (DebitCard* debitCard = dynamic_cast<DebitCard*>(card)) {
-            debitCard->addMoney(); 
+            debitCard->addMoney();
         }
         else if (CreditCard* creditCard = dynamic_cast<CreditCard*>(card)) {
-            creditCard->addMoney(); 
+            creditCard->addMoney();
         }
         break;
     case 3:
@@ -134,7 +135,7 @@ void Menu(Account& Acc) {
             creditCard->reportsExpensesCategories(); // Вызов метода payment() для кредитной карты
         }
         break;
-    case 5: 
+    case 5:
 
     default:
         cout << "Invalid choice!" << endl;

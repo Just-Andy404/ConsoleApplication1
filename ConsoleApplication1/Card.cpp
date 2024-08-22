@@ -44,4 +44,14 @@ void Card::getNumsOfCard() const {
     cout << endl;
 }
 
+void Card::getBalance() const
+{
+    cout << "";
+}
+
+void Card::getValidityPeriod() const
+{
+    cout << endl;
+}
+
 

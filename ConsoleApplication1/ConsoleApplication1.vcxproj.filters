@@ -38,9 +38,6 @@
     <ClCompile Include="debitСards.cpp">
       <Filter>Debit Card</Filter>
     </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>Menu</Filter>
-    </ClCompile>
     <ClCompile Include="Card.cpp">
       <Filter>Card</Filter>
     </ClCompile>
@@ -55,6 +52,9 @@
     </ClCompile>
     <ClCompile Include="SaveData.cpp">
       <Filter>SaveFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Manu.cpp">
+      <Filter>Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

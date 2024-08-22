@@ -2,6 +2,11 @@
 #include "debit—ards.h"
 
 
+void DebitCard::ShowInfo() const
+{
+    cout << endl;
+}
+
 void DebitCard::addMoney()
 {
     double Money = 0.0;
@@ -23,7 +28,7 @@ void DebitCard::addMoney()
 
 void DebitCard::payment()
 {
-
+    cout << endl;
 }
 
 double DebitCard::getHowMuchMoney(const string& filename) {
