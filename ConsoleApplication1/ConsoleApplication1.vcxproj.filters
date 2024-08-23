@@ -53,7 +53,7 @@
     <ClCompile Include="SaveData.cpp">
       <Filter>SaveFile</Filter>
     </ClCompile>
-    <ClCompile Include="Manu.cpp">
+    <ClCompile Include="Menu.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
   </ItemGroup>
@@ -75,6 +75,9 @@
     </ClInclude>
     <ClInclude Include="SaveData.h">
       <Filter>SaveFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
