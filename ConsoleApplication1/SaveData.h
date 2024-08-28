@@ -1,45 +1,126 @@
+// SaveData.h
+
 #pragma once
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
+#include "Card.h"
 
-class SaveDate {
-private:
-    std::string lastName;
-    std::string firstName;
-    std::string middleName;
+using namespace std;
 
+class SaveData {
 public:
-    // Конструктор класса
-    SaveDate(const std::string& lastName, const std::string& firstName, const std::string& middleName)
-        : lastName(lastName), firstName(firstName), middleName(middleName) {}
+    static bool validateLoginAndPassword(const string& directory, const string& userAccount, const string& userPassword) {
+        string filePath = "data/" + userAccount + ".txt";
 
-    // Метод для сохранения данных в бинарный файл
-    void saveToBinary(const std::string& filePath) const {
-        std::ofstream file(filePath, std::ios::binary);
-        if (file.is_open()) {
-            size_t length = lastName.size();
-            file.write(reinterpret_cast<const char*>(&length), sizeof(length));
-            file.write(lastName.c_str(), length);
-
-            length = firstName.size();
-            file.write(reinterpret_cast<const char*>(&length), sizeof(length));
-            file.write(firstName.c_str(), length);
-
-            length = middleName.size();
-            file.write(reinterpret_cast<const char*>(&length), sizeof(length));
-            file.write(middleName.c_str(), length);
-
-            file.close();
+        ifstream inFile(filePath);
+        if (inFile.is_open()) {
+            string line;
+            string storedPassword;
+            while (getline(inFile, line)) {
+                if (line.find("Password: ") != string::npos) {
+                    storedPassword = line.substr(10);
+                    break;
+                }
+            }
+            inFile.close();
+            return storedPassword == userPassword;
         }
         else {
-            std::cerr << "Unable to open file: " << filePath << std::endl;
+            cerr << "Account with login " << userAccount << " does not exist." << endl;
+            return false;
         }
     }
 
-    // Геттеры для получения данных пользователя
-    std::string getLastName() const { return lastName; }
-    std::string getFirstName() const { return firstName; }
-    std::string getMiddleName() const { return middleName; }
+    static void createFileAndWriteData(const string& directory, const string& userAccount, const string& userName, const string& userPassword, Card* userCard) {
+        string filePath = directory + "/" + userAccount + ".txt";
+
+        ofstream outFile(filePath);
+        if (outFile.is_open()) {
+            outFile << "User name: " << userName << endl;
+            outFile << "Account: " << userAccount << endl;
+            outFile << "Password: " << userPassword << endl;
+            if (userCard) {
+                outFile << "Card type: " << (userCard->getCardType() == DEBIT ? "Debit" : "Credit") << endl;
+                outFile << "Card number: ";
+                const int* cardNumbers = userCard->getNumsOfCard();
+                for (int i = 0; i < 16; ++i) {
+                    outFile << cardNumbers[i];
+                    if (i < 15) outFile << " ";
+                }
+                outFile << endl;
+                outFile << "Balance: " << userCard->getBalance() << endl;
+                if (dynamic_cast<CreditCard*>(userCard)) {
+                    CreditCard* creditCard = static_cast<CreditCard*>(userCard);
+                    cout << "Credit Limit: " << creditCard->getCreditLimit() << endl;
+                }
+            }
+            else {
+                outFile << "No card associated." << endl;
+            }
+            outFile.close();
+        }
+        else {
+            cerr << "Unable to open file for writing: " << filePath << endl;
+        }
+    }
+
+
+    static void analyzeAndPrintFile(const string& filePath) {
+        ifstream inFile(filePath);
+        if (inFile.is_open()) {
+            string line;
+            while (getline(inFile, line)) {
+                cout << line << endl;
+            }
+            inFile.close();
+        }
+        else {
+            cerr << "Unable to open file for reading: " << filePath << endl;
+        }
+    }
+
+    static void appendDataToFile(const string& filePath, const string& data) {
+        ofstream outFile(filePath, ios::app);
+        if (outFile.is_open()) {
+            outFile << data << endl;
+            outFile.close();
+        }
+        else {
+            cerr << "Unable to open file for appending: " << filePath << endl;
+        }
+    }
+
+    static double getBalanceFromFile(const string& directory, const string& userAccount) {
+        string filePath = directory + "/" + userAccount + ".txt";
+
+        ifstream inFile(filePath);
+        if (inFile.is_open()) {
+            string line;
+            while (getline(inFile, line)) {
+                // Ищем строку, начинающуюся с "Balance: "
+                size_t pos = line.find("Balance: ");
+                if (pos != string::npos) {
+                    // Извлекаем значение баланса
+                    // Позиция после "Balance: " начинается с pos + 9
+                    string balanceStr = line.substr(pos + 9);
+                    // Преобразуем строку в число
+                    double balance = 0.0;
+                    try {
+                        balance = stod(balanceStr); // stod преобразует строку в double
+                    }
+                    catch (const invalid_argument& e) {
+                        cerr << "Invalid balance format in file: " << filePath << endl;
+                    }
+                    inFile.close();
+                    return balance;
+                }
+            }
+            inFile.close();
+        }
+        else {
+            cerr << "Unable to open file for reading: " << filePath << endl;
+        }
+        return 0.0; // Возвращаем 0, если файл не удалось открыть или не найдено значение баланса
+    }
 };

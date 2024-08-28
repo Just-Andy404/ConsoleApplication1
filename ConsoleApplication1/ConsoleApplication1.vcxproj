@@ -132,9 +132,6 @@
     <ClCompile Include="ConsoleApplication1.cpp" />
     <ClCompile Include="CreditCard.cpp" />
     <ClCompile Include="debitСards.cpp" />
-    <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="PaymentSystem.cpp" />
-    <ClCompile Include="SaveData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Account.h" />

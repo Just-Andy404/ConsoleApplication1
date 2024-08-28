@@ -1,20 +1,23 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <cstdlib>  
-#include <ctime>    
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
+
+enum CardType { DEBIT, CREDIT };  
 
 // Базовый класс Card
 class Card {
 protected:
-    int _NumsOfCard[17];  
+    int _NumsOfCard[17];
     double _balance;
     int _validity_period[6];
+    CardType _cardType;  
 
 public:
-    Card() : _balance(0.0) {
+    Card() : _balance(0.0) {  
         for (int i = 0; i < 16; ++i) {
             _NumsOfCard[i] = 0;
         }
@@ -23,7 +26,7 @@ public:
         }
     }
 
-    virtual ~Card(); 
+    virtual ~Card();
 
     void generateNumsOfCard();
 
@@ -33,10 +36,20 @@ public:
 
     bool checkNumsOfCard(const int cardNumber[16]) const;
 
-    void getNumsOfCard() const;
+    const int* getNumsOfCard() const;
 
-    void getBalance() const;
+    double getBalance() const;
 
-    void getValidityPeriod() const;
+    CardType getCardType() const {  
+        return _cardType;
+    }
+
+    void setCardNumber(const int cardNumber[16]) {
+        for (int i = 0; i < 16; ++i) {
+            _NumsOfCard[i] = cardNumber[i];
+        }
+    }
+
+    void logExpense(double amount, const string& date, const string& category, const string& userAccount);
 
 };

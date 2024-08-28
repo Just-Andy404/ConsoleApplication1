@@ -3,6 +3,7 @@
 #include <cstdlib>  // Для rand() и srand()
 #include <ctime>    // Для time()
 #include "Card.h"
+#include "CreditCard.h"
 using namespace std;
 
 class Account 
@@ -12,8 +13,7 @@ private:
     string _userAccount;
     string _userPassword;
     Card* _userCard;
-    void writeDataToFile(const string& filename) const;
-
+    CreditCard _userCreditLimit;
 public:
     // Конструктор по умолчанию
     Account() : _userAccount(""), _userName(""), _userPassword(""), _userCard(nullptr) { }
@@ -61,22 +61,6 @@ public:
     }
 
     // Показ информации
-    void showInfo() const {
-        cout << "User name: " << _userName << endl;
-        cout << "Account: " << _userAccount << endl;
-        cout << "Password: " << _userPassword << endl;
-        if (_userCard) {
-            _userCard->getNumsOfCard(); 
-            _userCard->getBalance();
-            _userCard->getValidityPeriod();
-
-        }
-        else {
-            cout << "No card associated." << endl;
-        }
-
-
-    
-    }
+    void showInfo() const;
 
 };

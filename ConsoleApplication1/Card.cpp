@@ -1,4 +1,5 @@
 #include "Card.h"
+#include <fstream>
 
 Card::~Card()
 {
@@ -36,22 +37,27 @@ bool Card::checkNumsOfCard(const int cardNumber[16]) const
     return true;
 }
 
-void Card::getNumsOfCard() const {
-    cout << "Card number: ";
-    for (int i = 0; i < 16; ++i) {
-        cout << _NumsOfCard[i];
+const int* Card::getNumsOfCard() const {
+    return _NumsOfCard;
+}
+
+
+double Card::getBalance() const
+{
+    return _balance;
+}
+
+void Card::logExpense(double amount, const string& date, const string& category, const string& userAccount)
+{
+    string filePath = "data/" + userAccount + ".txt";
+    ofstream logFile(filePath, ios::app);
+    if (logFile.is_open()) {
+        logFile << "Amount: " << amount
+            << ", Date: " << date
+            << ", Category: " << category << endl;
+        logFile.close();
     }
-    cout << endl;
+    else {
+        cerr << "Unable to open log file for writing." << endl;
+    }
 }
-
-void Card::getBalance() const
-{
-    cout << "";
-}
-
-void Card::getValidityPeriod() const
-{
-    cout << endl;
-}
-
-

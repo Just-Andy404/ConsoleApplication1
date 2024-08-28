@@ -44,17 +44,8 @@
     <ClCompile Include="Account.cpp">
       <Filter>Account</Filter>
     </ClCompile>
-    <ClCompile Include="PaymentSystem.cpp">
-      <Filter>Pay</Filter>
-    </ClCompile>
     <ClCompile Include="CreditCard.cpp">
       <Filter>CreditCard</Filter>
-    </ClCompile>
-    <ClCompile Include="SaveData.cpp">
-      <Filter>SaveFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,42 +1,41 @@
 #include "Account.h"
-
+#include "SaveData.h"
+#include "debitСards.h"
+#include "CreditCard.h"
 #include <fstream>
-#include <string>
+#include <iostream>
 using namespace std;
 
+Account::Account(string userAccount, string userPassword, Card* userCard, string userName)
+    : _userAccount(userAccount), _userPassword(userPassword), _userCard(userCard), _userName(userName)
+{
+    userCard->generateNumsOfCard();
+    SaveData::createFileAndWriteData("data", _userAccount, _userName, _userPassword, _userCard);
+}
 
-void Account::writeDataToFile(const string& filename) const {
-    ofstream out(filename, ios::binary | ios::trunc | ios::out);
-    if (out.is_open()) {
-        // Запись строк (сначала длина строки, потом сама строка)
-        size_t accountSize = _userAccount.size();
-        size_t passwordSize = _userPassword.size();
-        size_t nameSize = _userName.size();
 
-        out.write(reinterpret_cast<const char*>(&accountSize), sizeof(accountSize));
-        out.write(_userAccount.c_str(), accountSize);
+void Account::showInfo() const {
+    cout << "User name: " << _userName << endl;
+    cout << "Account: " << _userAccount << endl;
+    cout << "Password: " << _userPassword << endl;
 
-        out.write(reinterpret_cast<const char*>(&passwordSize), sizeof(passwordSize));
-        out.write(_userPassword.c_str(), passwordSize);
+    if (_userCard) {
+        const int* cardNumbers = _userCard->getNumsOfCard();
+        cout << "Card type: " << (_userCard->getCardType() == DEBIT ? "Debit" : "Credit") << endl;  // Отображаем тип карты
+        cout << "Card numbers: ";
+        for (int i = 0; i < 16; ++i) {
+            cout << cardNumbers[i];
+            if (i < 15) cout << " ";
+        }
+        cout << endl;
+        double balance = SaveData::getBalanceFromFile("data", _userAccount);
+        cout << "Balance: " << balance << endl;
+        if (auto* creditCard = dynamic_cast<CreditCard*>(_userCard)) {
+            cout << "Credit Limit: " << creditCard->getCreditLimit() << endl;
+        }
 
-        out.write(reinterpret_cast<const char*>(&nameSize), sizeof(nameSize));
-        out.write(_userName.c_str(), nameSize);
-
-        // Убедитесь, что метод writeToFile существует в Card, если он нужен
-        // if (_userCard) {
-        //     _userCard->writeToFile(out);
-        // }
-
-        out.close(); // Закрытие файла
     }
     else {
-        cerr << "Unable to open file for writing" << endl;
+        cout << "No card associated." << endl;
     }
 }
-
-
-Account::Account(string userAccount, string userPassword, Card* userCard, string userName)
-    : _userAccount(userAccount), _userPassword(userPassword), _userCard(userCard), _userName(userName) {
-    writeDataToFile("account_data.bin");
-}
-
