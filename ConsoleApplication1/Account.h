@@ -15,7 +15,7 @@ private:
     Card* _userCard;
     CreditCard _userCreditLimit;
 public:
-    // Конструктор по умолчанию
+    // Конструктор по умffdолчанию
     Account() : _userAccount(""), _userName(""), _userPassword(""), _userCard(nullptr) { }
 
     // Конструктор с параметрами
